@@ -1,10 +1,13 @@
 const express = require('express');
-const Controlers = require('../Controllers/dados')
+const Controlers = require('../Controllers/dados');
+const midedleware = require('../Middleware/midedleware');
+
 const Rota= express.Router();
 
-Rota.get('/lab',Controlers.getDados);
-Rota.post('/lab',Controlers.PostDados);
-Rota.put('/lab/:id',);
-Rota.delete('/lab/:id',Controlers.deleteDados);
+
+Rota.get('/laboratorio/todos',midedleware.horarioFucAPI,Controlers.getDados);
+Rota.get('/laboratorio/relatorio',midedleware.horarioFucAPI,Controlers.gerarRelatorio);
+Rota.post('/laboratorio/todos/novo',midedleware.horarioFucAPI,midedleware.dadosEnviados,Controlers.PostDados);
+
 
 module.exports=Rota
