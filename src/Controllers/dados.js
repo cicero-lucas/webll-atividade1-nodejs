@@ -3,6 +3,12 @@ const pdfkit = require('pdfkit');
 const dados= require('../models/model')
 let cont=0
 
+function home(req,res){
+    return res.json({"ver laboratorios":"laboratorio/todos",
+    "relatorio":"/laboratorio/relatorio",
+    "Cadastra novo laboratorio":"/laboratorio/todos/novo"});
+}
+
 function getDados (req,res){
     return res.status(200).json(dados);
 }
@@ -47,6 +53,7 @@ function PostDados (req,res){
 
 
 module.exports={
+    home,
     getDados,
     PostDados,
     gerarRelatorio
