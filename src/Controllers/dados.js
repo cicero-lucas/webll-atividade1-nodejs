@@ -1,5 +1,5 @@
 const fs = require('fs');
-const pdfkit = require('pdfkit');
+const pdfRelarotio = require('pdfkit');
 const dados= require('../models/model')
 let cont=0
 
@@ -16,24 +16,16 @@ function getDados (req,res){
 
 function gerarRelatorio(req, res) {
     try {
-        const doc = new pdfkit();
-        doc.pipe(fs.createWriteStream(`relatorio_laboratorio${cont}.pdf`));
-        doc.font('Helvetica-Bold').fontSize(15).text('Relatório de Laboratórios', { align: 'center' }).moveDown(2);
-
-        dados.forEach((value, index) => {
-            doc.font('Helvetica').fontSize(13).text(`Nome: ${value.nome} Capacidade: ${value.capacidade}  Descrição: ${value.descrição}  Chave: ${(value.chave) ? value.chave: index}`).moveDown(1);
-        });
+        const doc = new pdfRelarotio();
+        res.setHeader('Content-Disposition', 'attachment; filename="relatorio.pdf"');
+         res.setHeader('Content-Type', 'application/pdf');
+  
+        doc.text(JSON.stringify(dados), 50, 50);
+  
+        console.log("Relatório gerado com sucesso. Enviando resposta...");
+        doc.pipe(res);
         doc.end();
-
-        res.download(`relatorio_laboratorio${cont}.pdf`, `relatorio_laboratorio${cont}.pdf`, (err) => {
-            if (err) {
-                console.error('Erro ao gerar o relatório:', err);
-                return res.json('Download feito com sucesso');
-            } else {
-                console.log('Relatório gerado com sucesso.');
-                return res.json('Download feito com sucesso');
-            }
-        });
+        console.log("Relatório enviado!");
 
         cont++
 
