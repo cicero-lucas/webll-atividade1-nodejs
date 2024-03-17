@@ -1,7 +1,7 @@
 const horarioFucAPI = (req,res,next) =>{
 
     const horaAtula = new Date().getHours();
-    if(horaAtula<8 || horaAtula>=17){
+    if(horaAtula<8 || horaAtula>=22){
         return res.status(403).send("Acesso a API permitido somente entre 08:00 e 17:00 volte depois");
     }
     next();
